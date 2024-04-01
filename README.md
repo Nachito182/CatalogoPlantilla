@@ -1,4 +1,4 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://ibb.co/Lk18SxR" width="400" alt="ss"></a></p>
+<img src="https://ibb.co/Lk18SxR" width="400" alt="ss">
 
 ## Sobre el Proyecto
 
