@@ -59,7 +59,7 @@
                         </svg>
                     </div>
                     <h3 class="fs-2 text-body-emphasis">Variedad de opciones</h3>
-                    <p>Contamos con una amplia selección de productos para satisfacer sus necesidades, desde lo ultimo en tecnologia hasta las más exclusivas.</p>
+                    <p>Contamos con una amplia selección de productos para satisfacer sus necesidades, desde lo ultimo en tecnologia hasta lo más exclusivas.</p>
                 </div>
                 <div div class="feature col text-center" style="max-width: 35vh;">
                     <div class="feature-icon d-inline-flex align-items-center justify-content-center mb-3">
