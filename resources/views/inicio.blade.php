@@ -1,3 +1,40 @@
+<?php
+// Conexión a la base de datos
+$servername = "127.0.0.1:3306";
+$username = "root";
+$password = "";
+$database = "bd_producto";
+
+$conn = new mysqli($servername, $username, $password, $database);
+
+// Verificar la conexión
+if ($conn->connect_error) {
+    die("La conexión ha fallado: " . $conn->connect_error);
+}
+
+// Consulta para obtener los productos
+$sql = "SELECT * FROM tb_producto";
+$result = $conn->query($sql);
+
+$productos = array();
+
+// Obtener los resultados de la consulta y guardarlos en un array
+if ($result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+        $productos[] = $row;
+    }
+}
+
+// Consulta para obtener tres productos aleatorios diferentes al producto actual
+$sql_relacionados = "SELECT * FROM tb_producto WHERE id != 0 ORDER BY RAND() LIMIT 6";
+$result_relacionados = $conn->query($sql_relacionados);
+
+// Verificar si se encontró el producto
+if ($result->num_rows > 0) {
+    // Obtener los datos del producto
+    $producto = $result->fetch_assoc();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +54,7 @@
     <div class="p-3 text-bg-dark fixed-top" data-bs-theme="dark">
         <div class="container">
             <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                <a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+                <a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none" href="inicio">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-controller" viewBox="0 0 16 16">
                         <path d="M11.5 6.027a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0m-1.5 1.5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1m2.5-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0m-1.5 1.5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1m-6.5-3h1v1h1v1h-1v1h-1v-1h-1v-1h1z"/>
                         <path d="M3.051 3.26a.5.5 0 0 1 .354-.613l1.932-.518a.5.5 0 0 1 .62.39c.655-.079 1.35-.117 2.043-.117.72 0 1.443.041 2.12.126a.5.5 0 0 1 .622-.399l1.932.518a.5.5 0 0 1 .306.729q.211.136.373.297c.408.408.78 1.05 1.095 1.772.32.733.599 1.591.805 2.466s.34 1.78.364 2.606c.024.816-.059 1.602-.328 2.21a1.42 1.42 0 0 1-1.445.83c-.636-.067-1.115-.394-1.513-.773-.245-.232-.496-.526-.739-.808-.126-.148-.25-.292-.368-.423-.728-.804-1.597-1.527-3.224-1.527s-2.496.723-3.224 1.527c-.119.131-.242.275-.368.423-.243.282-.494.575-.739.808-.398.38-.877.706-1.513.773a1.42 1.42 0 0 1-1.445-.83c-.27-.608-.352-1.395-.329-2.21.024-.826.16-1.73.365-2.606.206-.875.486-1.733.805-2.466.315-.722.687-1.364 1.094-1.772a2.3 2.3 0 0 1 .433-.335l-.028-.079zm2.036.412c-.877.185-1.469.443-1.733.708-.276.276-.587.783-.885 1.465a14 14 0 0 0-.748 2.295 12.4 12.4 0 0 0-.339 2.406c-.022.755.062 1.368.243 1.776a.42.42 0 0 0 .426.24c.327-.034.61-.199.929-.502.212-.202.4-.423.615-.674.133-.156.276-.323.44-.504C4.861 9.969 5.978 9.027 8 9.027s3.139.942 3.965 1.855c.164.181.307.348.44.504.214.251.403.472.615.674.318.303.601.468.929.503a.42.42 0 0 0 .426-.241c.18-.408.265-1.02.243-1.776a12.4 12.4 0 0 0-.339-2.406 14 14 0 0 0-.748-2.295c-.298-.682-.61-1.19-.885-1.465-.264-.265-.856-.523-1.733-.708-.85-.179-1.877-.27-2.913-.27s-2.063.091-2.913.27"/>
@@ -114,150 +151,36 @@
         <div class="container px-4 py-5">
             <h2 class="pb-2 border-bottom ">Catalogo</h2>
             <div class="row row-cols-1 row-cols-md-3 g-4 py-4">
-                <div class="col">
-                    <div class="card h-100">
-                    <img src="https://hiraoka.com.pe/media/catalog/product/1/2/127625_7.jpg?quality=80&bg-color=255,255,255&fit=bounds&height=560&width=700&canvas=700:560" class="card-img-top" alt="Xbox Series X 1TB">
-                    <div class="card-body">
-                        <h5 class="card-title">Xbox Series X 1TB</h5>
-                        <p class="card-text">Presentamos Xbox Series X, la Xbox más rápida y potente que nunca. Juega miles de títulos de las cuatro generaciones de consolas, todos los juegos se ven y juegan mejor en Xbox Series X.</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Microsoft</button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Consola</button>
-                            </div>
-                            <small class="text-body-secondary">S/  2,799.00</small>
+                <?php
+                // Verificar si se encontraron productos relacionados
+                if ($result_relacionados->num_rows > 0) {
+                    // Mostrar los productos relacionados
+                    while ($producto_relacionado = $result_relacionados->fetch_assoc()) {
+                        ?>
+                        <div class="col-lg-4 mb-4">
+                            <a href="producto?id=<?php echo $producto_relacionado['id']; ?>" class="text-decoration-none">
+                                <div class="card h-100">
+                                    <img src="<?php echo $producto_relacionado['imagenurl']; ?>" class="card-img-top" alt="<?php echo $producto_relacionado['nombre']; ?>">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><?php echo $producto_relacionado['nombre']; ?></h5>
+                                        <p class="card-text"><?php echo $producto_relacionado['descripcion']; ?></p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-sm btn-outline-secondary"><?php echo $producto_relacionado['marca']; ?></button>
+                                                <button type="button" class="btn btn-sm btn-outline-secondary"><?php echo $producto_relacionado['categoria']; ?></button>
+                                            </div>
+                                            <small class="text-body-secondary">S/ <?php echo $producto_relacionado['precio']; ?></small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
                         </div>
-                    </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card h-100">
-                    <img src="https://hiraoka.com.pe/media/catalog/product/p/s/ps5_d_sa_rndr_lt_prod_rgb_la_240105-_1_.jpg?quality=80&bg-color=255,255,255&fit=bounds&height=560&width=700&canvas=700:560">
-                    <div class="card-body">
-                        <h5 class="card-title">PlayStation 5 1TB SSD</h5>
-                        <p class="card-text">Disfruta de tiempos de carga superveloces con un SSD de velocidad ultrarrápida, una experiencia más inmersiva gracias a la compatibilidad con respuesta háptica1, gatillos adaptativos1 y audio 3D*</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Sony</button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Consola</button>
-                            </div>
-                            <small class="text-body-secondary">S/  2,699.00</small>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card h-100">
-                    <img src="https://hiraoka.com.pe/media/catalog/product/1/2/128157-2.jpg?quality=80&bg-color=255,255,255&fit=bounds&height=560&width=700&canvas=700:560" class="card-img-top" alt="Xbox Series X 1TB">
-                    <div class="card-body">
-                        <h5 class="card-title">Nintendo Switch OLED 64GB</h5>
-                        <p class="card-text">La nueva consola cuenta con una vibrante pantalla OLED de 7 pulgadas, un soporte ajustable y amplio, una base con puerto LAN para conexión por cable, almacenamiento de 64 GB y audio mejorado.</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Nintendo</button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Consola</button>
-                            </div>
-                            <small class="text-body-secondary">S/  1,499.00</small>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card h-100">
-                    <img src="https://hiraoka.com.pe/media/catalog/product/1/2/124006.jpg?quality=80&bg-color=255,255,255&fit=bounds&height=560&width=700&canvas=700:560" class="card-img-top" alt="Xbox Series X 1TB">
-                    <div class="card-body">
-                        <h5 class="card-title">Audífonos G733 con micrófono inalámbricos</h5>
-                        <p class="card-text">Audífonos inalámbricos con micrófono para juegos diseñados para desempeño y confort. Equipados con todo el sonido envolvente, los filtros de voz y la iluminación avanzada que necesitas.</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Logitech</button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Accesorios</button>
-                            </div>
-                            <small class="text-body-secondary">S/  594.90</small>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card h-100">
-                    <img src="https://hiraoka.com.pe/media/catalog/product/1/_/1_394.jpg?quality=80&bg-color=255,255,255&fit=bounds&height=560&width=700&canvas=700:560" class="card-img-top" alt="Xbox Series X 1TB">
-                    <div class="card-body">
-                        <h5 class="card-title">Mouse Logitech G903 Lightspeed</h5>
-                        <p class="card-text"> El sensor HERO 25K cuenta con un seguimiento submicrónico. Diseño ambidiestro. Desplazamiento superrápido. Compatible con POWERPLAY para tener carga inalámbrica continua.</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Logitech</button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Accesorio</button>
-                            </div>
-                            <small class="text-body-secondary">S/  449.10</small>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card h-100">
-                    <img src="https://hiraoka.com.pe/media/catalog/product/1/3/130975-2.jpg?quality=80&bg-color=255,255,255&fit=bounds&height=560&width=700&canvas=700:560" class="card-img-top" alt="Xbox Series X 1TB">
-                    <div class="card-body">
-                        <h5 class="card-title">Silla Gamer con Masajeador Lumbar Kuzler RIK-101B</h5>
-                        <p class="card-text">La silla gamer Kuzler RIK-101B es un producto diseñado específicamente para brindar comodidad y soporte a los usuarios durante largas sesiones de juego o trabajo en frente de un ordenador. </p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Kuzler</button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Accesorio</button>
-                            </div>
-                            <small class="text-body-secondary">S/  399.00</small>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card h-100">
-                    <img src="https://hiraoka.com.pe/media/catalog/product/1/2/127681___1.jpg?quality=80&bg-color=255,255,255&fit=bounds&height=560&width=700&canvas=700:560" alt="Xbox Series X 1TB">
-                    <div class="card-body">
-                        <h5 class="card-title">God of War Ragnarok PS4</h5>
-                        <p class="card-text">God of War Ragnarök es un videojuego de acción y aventura hack and slash en tercera persona desarrollado por Santa Monica Studio y publicado por Sony Interactive Entertainment.</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Sony</button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Videojuego</button>
-                            </div>
-                            <small class="text-body-secondary">S/  289.00</small>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card h-100">
-                    <img src="https://hiraoka.com.pe/media/catalog/product/1/3/130307_1.jpg?quality=80&bg-color=255,255,255&fit=bounds&height=560&width=700&canvas=700:560" alt="Xbox Series X 1TB">
-                    <div class="card-body">
-                        <h5 class="card-title">The Legend of Zelda: Tears of the Kingdom</h5>
-                        <p class="card-text"> Es un videojuego de acción-aventura de 2023 de la serie The Legend of Zelda, desarrollado por la filial Nintendo EPD en colaboración con Monolith Soft.</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Nintendo</button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Videojuego</button>
-                            </div>
-                            <small class="text-body-secondary">S/  299.00</small>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card h-100">
-                    <img src="https://hiraoka.com.pe/media/catalog/product/1/2/127258.jpg?quality=80&bg-color=255,255,255&fit=bounds&height=560&width=700&canvas=700:560" class="card-img-top" alt="Xbox Series X 1TB">
-                    <div class="card-body">
-                        <h5 class="card-title">Grand Theft Auto V PS5</h5>
-                        <p class="card-text">Es un videojuego de acción-aventura de mundo abierto desarrollado por el estudio escocés Rockstar North y distribuido por Rockstar Games. Estrenado el 17 de setiembre de 2013</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Sony</button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Videojuego</button>
-                            </div>
-                            <small class="text-body-secondary">S/  219.00</small>
-                        </div>
-                    </div>
-                    </div>
-                </div>
+                        <?php
+                    }
+                } else {
+                    echo "No hay productos relacionados.";
+                }
+                ?>
             </div>
             <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-2">
                 <button type="button" class="btn btn-primary btn-lg px-4 me-sm-3" onclick="location.href='comprar'">Ver Más</button>
@@ -271,3 +194,8 @@
     </div>
 </body>
 </html>
+<?php
+
+// Cerrar la conexión
+$conn->close();
+?>

@@ -17,3 +17,7 @@ Route::get('/comprar', function(){
 Route::get('/carrito', function(){
     return view('carrito');
 });
+
+Route::get('/producto', function(){
+    return view('producto');
+});
