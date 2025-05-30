@@ -1,5 +1,4 @@
-<img src="https://ibb.co/Lk18SxR" width="400" alt="ss">
-
+![Vista previa de NekoTube](https://ibb.co/PZF05tdJ)
 ## Sobre el Proyecto
 
 La página es un catálogo en línea que ofrece una amplia gama de productos relacionados con videojuegos y tecnología. Desde consolas de última generación hasta accesorios innovadores, el catálogo se esfuerza por satisfacer las necesidades de los entusiastas de los juegos y la tecnología. Diseñada con las últimas tecnologías web, incluyendo HTML, CSS y Bootstrap, la página presenta un aspecto moderno y responsivo.
@@ -12,14 +11,14 @@ En resumen, el catálogo en línea no solo ofrece una amplia selección de produ
 
 ## Contenido
 
-**Inicio:
+**Inicio:**
 
 - Sección Bienvenida: Presenta una breve introducción a GeneralGames y su oferta de productos, con énfasis en consolas de última generación, una amplia selección de juegos y periféricos.
 - Sección ¿Por qué elegirnos?: Destaca tres puntos clave para elegir GeneralGames: variedad de opciones, productos de calidad y confianza garantizada.
 - Sección Categorías: Muestra tres categorías principales de productos: Consolas, Accesorios y Videojuegos.
 - Sección Catálogo: Presenta una selección de productos destacados, incluyendo consolas, videojuegos y accesorios
 
-**Catalogo:
+**Catalogo:**
 
 - Sección Carrusel: Presenta varios Heroes de informacion sobre productos de Consolas, juegos y accesorios que van rotando con el tiempo
 - Sección Catálogo: Presenta una selección de productos destacados, incluyendo consolas, videojuegos y accesorios
