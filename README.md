@@ -1,4 +1,4 @@
-![Vista previa de NekoTube](https://ibb.co/PZF05tdJ)
+![Vista previa]("https://ibb.co/PZF05tdJ")
 ## Sobre el Proyecto
 
 La página es un catálogo en línea que ofrece una amplia gama de productos relacionados con videojuegos y tecnología. Desde consolas de última generación hasta accesorios innovadores, el catálogo se esfuerza por satisfacer las necesidades de los entusiastas de los juegos y la tecnología. Diseñada con las últimas tecnologías web, incluyendo HTML, CSS y Bootstrap, la página presenta un aspecto moderno y responsivo.
